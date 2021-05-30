@@ -51,6 +51,23 @@ const userController = {
             .catch(e => res.status(400).json(e));
     },
 
+    //POST friend - add a friend to user's friend list
+    addFriend({ params, body }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $push: { friends: body.friendId } },
+            { new: true }
+        )
+            .then(dbUserData => {
+                if (!dbUserData) {
+                    res.status(404).json({ message: 'No user found with this id' });
+                    return;
+                }
+                res.json(dbUserData);
+            })
+            .catch(e => res.json(e));
+    },
+
     //PUT (update) user by _id
     //use 'params' and 'body' from 'req'
     updateUser({ params, body }, res) {
