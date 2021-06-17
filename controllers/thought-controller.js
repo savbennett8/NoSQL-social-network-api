@@ -35,10 +35,14 @@ const thoughtController = {
     //expects: "thoughtText", "username", & "userId"
     createThought({ body }, res) {
         Thought.create(body)
+            .then(dbThoughtData => {
+                return User.findOneAndUpdate(
+                    { _id: dbThoughtData.userId },
+                    { $push: { thoughts: dbThoughtData._id } },
+                    { new: true }
+                )
+            })
             .then(dbThoughtData => res.json(dbThoughtData))
-            .then(
-                //send thought _id to User's 'thoughts' array field
-            )
             .catch(e => res.status(400).json(e));
     },
 
@@ -50,7 +54,9 @@ const thoughtController = {
             { $push: { reactions: body } },
             { new: true }
         )
+            .select('-__v')
             .then(dbThoughtData => {
+
                 if (!dbThoughtData) {
                     res.status(404).json({ message: 'No thought found with that id' });
                     return;
@@ -76,16 +82,20 @@ const thoughtController = {
     //delete thought by _id
     deleteThought({ params }, res) {
         Thought.findOneAndDelete({ _id: params.id })
-            .then(dbThoughtData => {
-                if (!dbThoughtData) {
+            .then(({ _id }) => {
+                return User.findOneAndUpdate(
+                    { _id: params.userId },
+                    { $pull: { thoughts: params.thoughtId } },
+                    { new: true }
+                )
+            })
+            .then(dbUserData => {
+                if (!dbUserData) {
                     res.status(404).json({ message: 'No thought found with this id' });
                     return;
                 }
                 res.json({ message: 'Thought successfully deleted!' });
             })
-            .then(
-                //remove thought _id from User's 'thoughts' array field
-            )
             .catch(e => res.status(400).json(e));
     }
 };
