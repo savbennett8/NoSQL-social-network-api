@@ -13,7 +13,7 @@ Using the NoSQL database, MongoDB, I created API routes for a social networking 
 This application uses MongoDB, Mongoose, and Express.js technologies. Clone the project's code onto your local machine and run 'npm install' to get the required dependencies. Then run 'npm start' or 'node server.js' to start up the connection. Because there is not a front end, I used Insomnia Core to test the API routes.
 
 ### Usage
-I created a video demonstration on the functionality of these API routes. Click [here](link) to view the video.
+I created a video demonstration on the functionality of these API routes. Click [here](https://drive.google.com/file/d/13xHoWo7y1iapM9bXdA7y3QqgvVLSKXcb/view?usp=sharing) to view the video.
 
 ### Contributing
 Contributions are welcome! Contact me if you think you'd like to contribute to this project.
