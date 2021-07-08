@@ -94,6 +94,23 @@ const userController = {
                 res.json({ message: 'User successfully deleted!' });
             })
             .catch(e => res.status(400).json(e));
+    },
+
+    //delete friend
+    deleteFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $pull: { friends: params.friendId } },
+            { new: true }
+        )
+            .then(dbUserData => {
+                if (!dbUserData) {
+                    res.status(404).json({ message: 'No user found with tis id' });
+                    return;
+                }
+                res.json({ message: 'Friend successfully deleted!' });
+            })
+            .catch(e => res.status(400).json(e));
     }
 };
 
