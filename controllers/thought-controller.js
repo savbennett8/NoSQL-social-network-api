@@ -50,7 +50,7 @@ const thoughtController = {
     //expects: "reactionBody" & "username"
     createReaction({ params, body }, res) {
         Thought.findOneAndUpdate(
-            { _id: params.thoughtId },
+            { _id: params.id },
             { $push: { reactions: body } },
             { new: true }
         )
